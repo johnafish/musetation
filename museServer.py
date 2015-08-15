@@ -36,18 +36,24 @@ def arrayAverage(array):
     total += i
   return total/(len(nums))
 
-def clientDataHandler(*data):
-  global alphaArray, betaArray, deltaArray, thetaArray, timesCalled
-  mean = getAverage(data)
-  if timesCalled % 4 == 0:
-    alphaArray.append(mean)
-  elif timesCalled % 4 == 1:
-    betaArray.append(mean)
-  elif timesCalled % 4 == 2:
-    deltaArray.append(mean)
-  else:
-    thetaArray.append(mean)
-  timesCalled += 1
+def alphaData(*data):
+  global alphaArray
+  alphaArray.append(getAverage(data))
+  submitData()
+
+def betaData(*data):
+  global betaArray
+  betaArray.append(getAverage(data))
+  submitData()
+
+def deltaData(*data):
+  global deltaArray
+  deltaArray.append(getAverage(data))
+  submitData()
+
+def thetaData(*data):
+  global thetaArray
+  thetaArray.append(getAverage(data))
   submitData()
 
 def submitData():
@@ -56,7 +62,7 @@ def submitData():
     lastSubmit = time.time()
     avgArray = [arrayAverage(alphaArray), arrayAverage(betaArray), arrayAverage(deltaArray), arrayAverage(thetaArray)]
     mostActiveIndex = avgArray.find(max(avgArray))
-    f = open('./file.txt', 'w')
+    f = open('./file.txt', 'a')
     f.write(mostActiveIndex)
     f.close()
     print('Wrote ' + str(mostActiveIndex)) + ' to file.')
@@ -76,7 +82,10 @@ if __name__ == "__main__":
   args = parser.parse_args()
 
   dispatcher = dispatcher.Dispatcher()
-  dispatcher.map("/muse/elements/alpha_absolute", print)
+  dispatcher.map("/muse/elements/alpha_absolute", alphaData)
+  dispatcher.map("/muse/elements/beta_absolute", betaData)
+  dispatcher.map("/muse/elements/delta_absolute", deltaData)
+  dispatcher.map("/muse/elements/theta_absolute", thetaData)
 
   server = osc_server.ThreadingOSCUDPServer(
       (args.ip, args.port), dispatcher)
