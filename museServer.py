@@ -6,14 +6,15 @@ from pythonosc import dispatcher
 from pythonosc import osc_server
 
 def initArrays():
-  global alphaArray, betaArray, deltaArray, thetaArray, timesCalled, lastSubmit
+  global alphaArray, betaArray, deltaArray, thetaArray
+  global timesCalled, lastSubmit, serverRunning
   timesCalled = 0
   alphaArray = []
   betaArray = []
   thetaArray = []
   deltaArray = []
   lastSubmit = time.time()
-
+  serverRunning = False
 
 def print_volume_handler(unused_addr, args, volume):
   print("[{0}] ~ {1}".format(args[0], volume))
@@ -26,15 +27,18 @@ def print_compute_handler(unused_addr, args, volume):
 
 def getAverage(*nums):
   total = 0
-  for i in nums:
-    total += i
-  return total/(len(nums))
+  nums = list(nums)
+  for i in range(len(nums[0])):
+    if i>0:
+      total += float(nums[0][i])
+  total = total/4
+  return total
 
 def arrayAverage(array):
   total = 0
   for i in array:
     total += i
-  return total/(len(nums))
+  return total/(len(array))
 
 def alphaData(*data):
   global alphaArray
@@ -61,33 +65,37 @@ def submitData():
   if time.time() - lastSubmit > 3:
     lastSubmit = time.time()
     avgArray = [arrayAverage(alphaArray), arrayAverage(betaArray), arrayAverage(deltaArray), arrayAverage(thetaArray)]
-    mostActiveIndex = avgArray.find(max(avgArray))
+    print(avgArray)
+    mostActiveIndex = avgArray.index(max(avgArray))
     f = open('./file.txt', 'a')
-    f.write(mostActiveIndex)
+    f.write(str(mostActiveIndex)+",")
     f.close()
-    print('Wrote ' + str(mostActiveIndex)) + ' to file.')
+    # print('Wrote ' + str(mostActiveIndex)) + ' to file.')
     alphaArray = []
     betaArray = []
     thetaArray = []
     deltaArray = []
 
 
-if __name__ == "__main__":
-  initArrays()
-  parser = argparse.ArgumentParser()
-  parser.add_argument("--ip",
-      default="localhost", help="The ip to listen on")
-  parser.add_argument("--port",
-      type=int, default=5005, help="The port to listen on")
-  args = parser.parse_args()
+def runMuseServer():
+  global dispatcher, Dispatcher, serverRunning
+  if not serverRunning:
+    print('called')
+    serverRunning = True
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--ip",
+        default="localhost", help="The ip to listen on")
+    parser.add_argument("--port",
+        type=int, default=5005, help="The port to listen on")
+    args = parser.parse_args()
 
-  dispatcher = dispatcher.Dispatcher()
-  dispatcher.map("/muse/elements/alpha_absolute", alphaData)
-  dispatcher.map("/muse/elements/beta_absolute", betaData)
-  dispatcher.map("/muse/elements/delta_absolute", deltaData)
-  dispatcher.map("/muse/elements/theta_absolute", thetaData)
+    dispatcher = dispatcher.Dispatcher()
+    dispatcher.map("/muse/elements/alpha_absolute", alphaData)
+    dispatcher.map("/muse/elements/beta_absolute", betaData)
+    dispatcher.map("/muse/elements/delta_absolute", deltaData)
+    dispatcher.map("/muse/elements/theta_absolute", thetaData)
 
-  server = osc_server.ThreadingOSCUDPServer(
-      (args.ip, args.port), dispatcher)
-  print("Serving on {}".format(server.server_address))
-  server.serve_forever()
+    server = osc_server.ThreadingOSCUDPServer(
+        (args.ip, args.port), dispatcher)
+    print("Serving on {}".format(server.server_address))
+    server.serve_forever()
