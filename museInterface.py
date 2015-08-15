@@ -37,7 +37,7 @@ def startServer():
 def endServer():
 	global end, screen, start, serverThread, master
 	serverThread.stop()
-	f = open('./file.txt', 'a')
+	f = open('./file.json', 'a')
 	f.write("]")
 	f.close()
 	master.destroy()
