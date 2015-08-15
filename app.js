@@ -33,7 +33,15 @@ $("input").change(function(){
     });
 });
 
-var socket = io.connect('http://localhost');
-socket.on('news', function (data) {
-    console.log(data);
+$(document).ready(function(){
+    var file = "C:/Users/John/Desktop/musetation/file.txt";
+
+    var reader = new FileReader();
+
+    reader.onload = function(e) {
+        var result = reader.result;
+        console.log(result)
+    }
+
+    reader.readAsText(file);
 });
