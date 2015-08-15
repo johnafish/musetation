@@ -10,8 +10,9 @@ class StoppableThread(Thread):
     """Thread class with a stop() method. The thread itself has to check
     regularly for the stopped() condition."""
 
-    def __init__(self, target):
+    def __init__(self, target, daemon=True):
         super(StoppableThread, self).__init__()
+        self._daemon = daemon
         self._stop = Event()
         self._target = target
 
@@ -26,21 +27,19 @@ def startServer():
 	start.destroy()
 	end = Button(screen, text='End Session', width=25, height=2, bd=2, font=("Sans Serif", 15), activebackground='#4D94FF', background='#4D94FF', command=endServer)
 	end.place(x=APP_WIDTH/2, y=APP_HEIGHT/8*5, anchor='center')
-	screen.update()
 	f = open('./file.txt', 'w')
 	f.write("var x = [")
 	f.close()
 	museServer.initArrays()
-	serverThread = StoppableThread(museServer.runMuseServer)
-	serverThread.start()
+	museServer.runMuseServer()
 
 def endServer():
 	global end, screen, start, serverThread, master
-	serverThread.stop()
+	museServer.endServer()
 	f = open('./file.txt', 'a')
 	f.write("]")
 	f.close()
-	master.destroy()
+	sys.exit()
 
 master = Tk()
 master.title("museTation")

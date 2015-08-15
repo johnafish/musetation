@@ -1,13 +1,14 @@
 import argparse
 import math
 import time
+import threading
 
 from pythonosc import dispatcher
 from pythonosc import osc_server
 
 def initArrays():
   global alphaArray, betaArray, deltaArray, thetaArray
-  global timesCalled, lastSubmit, serverRunning
+  global timesCalled, lastSubmit
   timesCalled = 0
   alphaArray = []
   betaArray = []
@@ -76,25 +77,26 @@ def submitData():
     thetaArray = []
     deltaArray = []
 
+def endServer():
+  global server
+  server.shutdown()
 
 def runMuseServer():
-  global dispatcher, Dispatcher, serverRunning
-  if not serverRunning:
-    serverRunning = True
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--ip",
-        default="localhost", help="The ip to listen on")
-    parser.add_argument("--port",
-        type=int, default=7717, help="The port to listen on")
-    args = parser.parse_args()
+  global dispatcher, Dispatcher, server
+  parser = argparse.ArgumentParser()
+  parser.add_argument("--ip",
+      default="localhost", help="The ip to listen on")
+  parser.add_argument("--port",
+      type=int, default=5006, help="The port to listen on")
+  args = parser.parse_args()
 
-    dispatcher = dispatcher.Dispatcher()
-    dispatcher.map("/muse/elements/alpha_absolute", alphaData)
-    dispatcher.map("/muse/elements/beta_absolute", betaData)
-    dispatcher.map("/muse/elements/delta_absolute", deltaData)
-    dispatcher.map("/muse/elements/theta_absolute", thetaData)
+  dispatcher = dispatcher.Dispatcher()
+  dispatcher.map("/muse/elements/alpha_absolute", alphaData)
+  dispatcher.map("/muse/elements/beta_absolute", betaData)
+  dispatcher.map("/muse/elements/delta_absolute", deltaData)
+  dispatcher.map("/muse/elements/theta_absolute", thetaData)
 
-    server = osc_server.ThreadingOSCUDPServer(
-        (args.ip, args.port), dispatcher)
-    print("Serving on {}".format(server.server_address))
-    server.serve_forever()
+  server = osc_server.ForkingOSCUDPServer((args.ip, args.port), dispatcher)
+  print("Serving on {}".format(server.server_address))
+  server_thread = threading.Thread(target=server.serve_forever)
+  server_thread.start()
