@@ -4,6 +4,10 @@ html{
 * {
 	font-family: "Open Sans";
 }
+h1 {
+	text-align: center;
+	font-size: 4em;
+}
 label{
 	width:100%;
 	display: block;
@@ -40,4 +44,21 @@ input[type=range]::-webkit-slider-thumb {
   cursor: pointer;
   -webkit-appearance: none;
   margin-top: -10px;
+}
+body{
+	width: 100%;
+}
+#start, #stop {
+	display: block;
+	margin: 0px auto;
+	height: 2em;
+	width: 5em;
+	font-size: 2em;
+	border-radius: 10px;
+	background: #4D94FF;
+	border: 0px;
+	outline: 0px;
+}
+#start:active {
+	background: #4585e5;
 }

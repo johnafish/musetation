@@ -38,9 +38,15 @@ $("#delta").change(function(){
     $("#deltaval").text($(this).val())
 })
 $("#volume").change(function(){
-    $("#volumeval").text($(this).val())
+    $("#volumeval").text(parseFloat($(this).val())*100)
 })
-$(document).ready(function(){
-    console.log(x[0])
-    // console.log(museData)
-});
+$("#start").click(function(){
+    $("form").slideUp();
+    $(this).slideUp();
+    $("#stop").slideDown();
+})
+
+// $(document).ready(function(){
+//     console.log(x)
+//     console.log(museData)
+// });
