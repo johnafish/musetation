@@ -36,7 +36,7 @@ def startServer():
 def endServer():
 	global end, screen, start, serverThread, master
 	museServer.endServer()
-	f = open('./file.txt', 'a')
+	f = open('./file.json', 'a')
 	f.write("]")
 	f.close()
 	sys.exit()
