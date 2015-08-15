@@ -80,13 +80,12 @@ def submitData():
 def runMuseServer():
   global dispatcher, Dispatcher, serverRunning
   if not serverRunning:
-    print('called')
     serverRunning = True
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip",
         default="localhost", help="The ip to listen on")
     parser.add_argument("--port",
-        type=int, default=5005, help="The port to listen on")
+        type=int, default=7717, help="The port to listen on")
     args = parser.parse_args()
 
     dispatcher = dispatcher.Dispatcher()

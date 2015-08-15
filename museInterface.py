@@ -35,12 +35,12 @@ def startServer():
 	serverThread.start()
 
 def endServer():
-	global end, screen, start, serverThread
+	global end, screen, start, serverThread, master
 	serverThread.stop()
 	f = open('./file.txt', 'a')
 	f.write("]")
 	f.close()
-	sys.exit()
+	master.destroy()
 
 master = Tk()
 master.title("museTation")
