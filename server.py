@@ -1,36 +1,28 @@
-##Basic Server Module
+import socketserver
 
-import socket
-import sys
-from threading import *
-import time
+class MyTCPHandler(socketserver.BaseRequestHandler):
+    """
+    The RequestHandler class for our server.
 
-HOST = ''
-PORT = 8080
+    It is instantiated once per connection to the server, and must
+    override the handle() method to implement communication to the
+    client.
+    """
 
-#Create a socket
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    def handle(self):
+        # self.request is the TCP socket connected to the client
+        self.data = self.request.recv(1024).strip()
+        print("{} wrote:".format(self.client_address[0]))
+        print(self.data)
+        # just send back the same data, but upper-cased
+        self.request.sendall(self.data.upper())
 
-#Binding the socket
-try:
-	s.bind((HOST, PORT))
-	print('Bind successful.')
+if __name__ == "__main__":
+    HOST, PORT = "localhost", 9999
 
-except socket.error as error:
-	print ("Failed to bind. Code " + error[0] + ": " + error[1])
-	sys.exit()
+    # Create the server, binding to localhost on port 9999
+    server = socketserver.TCPServer((HOST, PORT), MyTCPHandler)
 
-#Socket now listens
-s.listen(10)
-print('Listening...')
-
-while True:
-	connection, address = s.accept()
-	print('Connected to ' + address[0] + ':' + str(address[1]))
-	if address:
-		msg = s.recv(4096)
-		if msg:
-			print(msg)
-		time.sleep(0.01)
-
-s.close()
+    # Activate the server; this will keep running until you
+    # interrupt the program with Ctrl-C
+    server.serve_forever()
