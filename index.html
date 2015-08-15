@@ -6,12 +6,18 @@ museTation
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="flocking/flocking-all.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-
+<link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css'>
 </head>
 <body>
+<form>
+<label for="frequency">Frequency: <span id="frequencyval">440</span></label>
 <input id="frequency" type="range" min="20" max="800" step="10" value="440"/>
+<label for="delta">Change in Frequency: <span id="deltaval">5</span></label>
 <input id="delta" type="range" min="0" max="50" step="1" value="5"/>
+<label for="volume">Volume: <span id="volumeval">0.25</span></label>
 <input id="volume" type="range" min="0" max="1" step="0.01" value="0.25"/>
+</form>
+<script type="text/javascript" src="file.json"></script>
 <script src="app.js"></script>
 <script>
 museTation.play()

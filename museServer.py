@@ -26,15 +26,18 @@ def print_compute_handler(unused_addr, args, volume):
 
 def getAverage(*nums):
   total = 0
-  for i in nums:
-    total += i
-  return total/(len(nums))
+  nums = list(nums)
+  for i in range(len(nums[0])):
+    if i>0:
+      total += float(nums[0][i])
+  total = total/4
+  return total
 
 def arrayAverage(array):
   total = 0
   for i in array:
     total += i
-  return total/(len(nums))
+  return total/(len(array))
 
 def alphaData(*data):
   global alphaArray
@@ -61,11 +64,12 @@ def submitData():
   if time.time() - lastSubmit > 3:
     lastSubmit = time.time()
     avgArray = [arrayAverage(alphaArray), arrayAverage(betaArray), arrayAverage(deltaArray), arrayAverage(thetaArray)]
-    mostActiveIndex = avgArray.find(max(avgArray))
+    print(avgArray)
+    mostActiveIndex = avgArray.index(max(avgArray))
     f = open('./file.txt', 'a')
-    f.write(mostActiveIndex)
+    f.write(str(mostActiveIndex)+",")
     f.close()
-    print('Wrote ' + str(mostActiveIndex)) + ' to file.')
+    # print('Wrote ' + str(mostActiveIndex)) + ' to file.')
     alphaArray = []
     betaArray = []
     thetaArray = []

@@ -20,7 +20,6 @@ var museTation = flock.synth({
  });
 
 $("input").change(function(){
-    console.log("click")
     var frequency = parseInt($("#frequency").val());
     var delta = parseInt($("#delta").val());
     var volume = parseFloat($("#volume").val());
@@ -32,16 +31,16 @@ $("input").change(function(){
         "rightSine.mul": volume
     });
 });
-
+$("#frequency").change(function(){
+    $("#frequencyval").text($(this).val())
+})
+$("#delta").change(function(){
+    $("#deltaval").text($(this).val())
+})
+$("#volume").change(function(){
+    $("#volumeval").text($(this).val())
+})
 $(document).ready(function(){
-    var file = "C:/Users/John/Desktop/musetation/file.txt";
-
-    var reader = new FileReader();
-
-    reader.onload = function(e) {
-        var result = reader.result;
-        console.log(result)
-    }
-
-    reader.readAsText(file);
+    console.log(x[0])
+    // console.log(museData)
 });
