@@ -2,6 +2,7 @@ import argparse
 import math
 import time
 import threading
+import os
 
 from pythonosc import dispatcher
 from pythonosc import osc_server
@@ -68,7 +69,7 @@ def submitData():
     avgArray = [arrayAverage(alphaArray), arrayAverage(betaArray), arrayAverage(deltaArray), arrayAverage(thetaArray)]
     print(avgArray)
     mostActiveIndex = avgArray.index(max(avgArray))
-    f = open('./file.txt', 'a')
+    f = open('./file.json', 'a')
     f.write(str(mostActiveIndex)+",")
     f.close()
     # print('Wrote ' + str(mostActiveIndex)) + ' to file.')
@@ -87,7 +88,7 @@ def runMuseServer():
   parser.add_argument("--ip",
       default="localhost", help="The ip to listen on")
   parser.add_argument("--port",
-      type=int, default=5006, help="The port to listen on")
+      type=int, default=1337, help="The port to listen on")
   args = parser.parse_args()
 
   dispatcher = dispatcher.Dispatcher()
@@ -96,7 +97,7 @@ def runMuseServer():
   dispatcher.map("/muse/elements/delta_absolute", deltaData)
   dispatcher.map("/muse/elements/theta_absolute", thetaData)
 
-  server = osc_server.ForkingOSCUDPServer((args.ip, args.port), dispatcher)
+  server = osc_server.ThreadingOSCUDPServer((args.ip, args.port), dispatcher)
   print("Serving on {}".format(server.server_address))
   server_thread = threading.Thread(target=server.serve_forever)
   server_thread.start()

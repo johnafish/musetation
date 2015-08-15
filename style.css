@@ -3,6 +3,8 @@ html{
 }
 * {
 	font-family: "Open Sans";
+	margin: 0px;
+	padding: 0px;
 }
 h1 {
 	text-align: center;
@@ -66,4 +68,30 @@ body{
 	width: 60%;
 	height: 200px;
 	margin: 0px auto;
+	display: block;
+}
+blockquote {
+  background: #4D94FF;
+  border-left: 10px solid #4585e5;
+  margin: 0px auto;
+  padding: 0.5em 10px;
+  font-size: 2em;
+  width: 60%;
+  quotes: "\201C""\201D""\2018""\2019";
+}
+blockquote:before {
+  color: #4585e5;
+  content: open-quote;
+  font-size: 4em;
+  line-height: 0.1em;
+  margin-right: 0.25em;
+  vertical-align: -0.4em;
+}
+blockquote p {
+  display: inline;
+}
+#share {
+	display: block;
+	width: 100px;
+	margin: 10px auto;
 }

@@ -41,14 +41,9 @@ $("#volume").change(function(){
     $("#volumeval").text(parseFloat($(this).val())*100)
 })
 $("#start").click(function(){
-    $("form").slideUp();
     $(this).slideUp();
     $("#stop").slideDown();
-    $(".timer").slideDown();
-    $(".timer").TimeCircles().start();
 })
-$(".timer").TimeCircles({start: false,  time: { Days: { show: false } }});
-// $(document).ready(function(){
-//     console.log(x)
-//     console.log(museData)
-// });
+$("#stop").click(function(){
+    window.location.href = "analyze.html"
+})
