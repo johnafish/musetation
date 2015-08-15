@@ -6,10 +6,12 @@ museTation
 <link rel="stylesheet" type="text/css" href="style.css">
 <script src="flocking/flocking-all.js"></script>
 <script src="https://cdn.socket.io/socket.io-1.3.5.js"></script>
-<script src="app.js"></script>
+
 </head>
 <body>
-<h1>Hello World</h1>
+<input id="frequency" type="range" min="20" max="800" step="10" value="440"/>
+<input id="delta" type="range" min="0" max="50" step="1" value="5"/>
+<script src="app.js"></script>
 <script>
 museTation.play()
 </script>
