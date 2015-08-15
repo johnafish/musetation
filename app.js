@@ -44,8 +44,10 @@ $("#start").click(function(){
     $("form").slideUp();
     $(this).slideUp();
     $("#stop").slideDown();
+    $(".timer").slideDown();
+    $(".timer").TimeCircles().start();
 })
-
+$(".timer").TimeCircles({start: false,  time: { Days: { show: false } }});
 // $(document).ready(function(){
 //     console.log(x)
 //     console.log(museData)

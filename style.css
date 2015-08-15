@@ -62,3 +62,8 @@ body{
 #start:active {
 	background: #4585e5;
 }
+.timer {
+	width: 60%;
+	height: 200px;
+	margin: 0px auto;
+}
