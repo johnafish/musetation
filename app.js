@@ -23,9 +23,12 @@ $("input").change(function(){
     console.log("click")
     var frequency = parseInt($("#frequency").val());
     var delta = parseInt($("#delta").val());
+    var volume = parseFloat($("#volume").val());
 
     museTation.set({
         "leftSine.freq": frequency,
-        "rightSine.freq": frequency+delta
+        "rightSine.freq": frequency+delta,
+        "leftSine.mul": volume,
+        "rightSine.mul": volume
     });
 });
