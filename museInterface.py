@@ -9,21 +9,6 @@ master.title("museTation")
 master.attributes("-fullscreen", True)
 APP_WIDTH = 1366
 APP_HEIGHT = 768
-class StoppableThread(Thread):
-    """Thread class with a stop() method. The thread itself has to check
-    regularly for the stopped() condition."""
-
-    def __init__(self, target, daemon=True):
-        super(StoppableThread, self).__init__()
-        self._daemon = daemon
-        self._stop = Event()
-        self._target = target
-
-    def stop(self):
-        self._stop.set()
-
-    def stopped(self):
-        return self._stop.isSet()
 
 def startServer():
 	global start, screen, end, serverThread
